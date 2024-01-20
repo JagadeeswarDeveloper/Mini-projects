@@ -1,0 +1,164 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play Time</title>
+</head>
+<style>
+  body{
+    background-color: cadetblue;
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    font-family:cursive;
+  }
+
+  .Gametitle{
+ 
+    font-size: 40px;
+
+    margin: 10px;
+  }
+  .button-emoji{
+    background-color:transparent;
+
+    padding: 0;
+    border-radius: 70px;
+    height: 100px;
+  }
+
+  .button-style{
+    background-color: cadetblue;
+    border-radius: 70px;
+    padding:20px ;
+    cursor: pointer;
+    margin: 15px;
+    border:  3px solid white;
+  }
+
+.gameMove img{
+  height: 50px;
+}
+
+</style>
+
+<body>
+  <!--
+    P tag
+    buttons {rock , paper , scissors }
+    input 
+    {rock : Sissors , paper}
+    {Scissors : paper , rock }
+    {paper : rock , scissors}
+    display result
+    display scorecard {wins , lose , tie}
+    button {Reset score}
+
+
+    game : 
+    computer picks {Rock , paper , scissors}
+    player picks {rock , paper ,scissors }
+    compare both {VS}
+
+  -->
+
+<p class="Gametitle">Rock Paper Scissors</p>
+
+<button class="button-style" onclick="playerMove('Rock')"><img class="button-emoji" src="/RockPaperScissors/rock-emoji.png" alt=""></button>
+<button class="button-style" onclick="playerMove('Paper')"><img class="button-emoji" src="/RockPaperScissors/paper-emoji.png" alt=""></button>
+<button class="button-style" onclick="playerMove('Scissors')"><img class="button-emoji" src="/RockPaperScissors/scissors-emoji.png" alt=""></button>
+<p class="gameResult" style="font-size: 30px;"></p>
+<p class="gameMove"></p>
+<p class="gameScore"></p>
+<button onclick="initalScore.Win = 0 ; initalScore.Lose = 0; initalScore.Tie= 0; displayResult() ; localStorage.removeItem('score')">Reset score</button>
+  <script>
+  let initalScore = JSON.parse(localStorage.getItem('Score')) || {
+    Win  :  0,
+    Lose :  0,
+    Tie  :  0
+  }
+
+
+  function computerMove(){
+    let computerpicks = '';
+    let num = Math.random();
+  
+    if (num >= 0 && num <1/3){
+      computerpicks = 'Rock';
+    }
+
+    else if( num >= 1/3 && num <2/3){
+      computerpicks = 'Paper';
+    }
+
+    else if(num >2/3 && num <1 ){
+      computerpicks = 'Scissors'
+    }
+
+    return computerpicks;
+    
+}
+
+let score = ''
+
+
+  function playerMove(pickedItem){
+    let playerPick = computerMove();
+
+    if (pickedItem === 'Rock'){
+      if(playerPick === 'Rock'){
+        score = 'Tie';
+      } else if(playerPick === 'Paper'){
+        score = 'Lose';
+      } else if(playerPick === 'Scissors'){
+        score = 'Win';
+      }
+
+    } 
+
+    else if (pickedItem === 'Paper'){
+      if(playerPick === 'Rock'){
+        score = 'Win';
+      } else if(playerPick === 'Paper'){
+        score = 'Tie';
+      } else if(playerPick === 'Scissors'){
+        score = 'Lose';
+      }
+
+    }
+
+    else if (pickedItem === 'Scissors'){
+      if(playerPick === 'Rock'){
+        score = 'Lose';
+      } else if(playerPick === 'Paper'){
+        score = 'Win';
+      } else if(playerPick === 'Scissors'){
+        score = 'Tie';
+      }
+
+    }
+
+    if(score === 'Win'){
+      initalScore.Win ++
+    } else if(score === 'Lose'){
+      initalScore.Lose ++
+    } else if(score === 'Tie'){
+      initalScore.Tie ++
+    }
+
+localStorage.setItem('Score' ,JSON.stringify(initalScore));
+    
+document.querySelector('.gameResult').innerText = `You ${score}`;
+document.querySelector('.gameMove').innerHTML = `You <img src="/RockPaperScissors/${pickedItem}-emoji.png" alt=""> VS <img src="/RockPaperScissors/${playerPick}-emoji.png" alt=""> Computer`;
+displayResult();
+
+  }
+
+
+ function displayResult(){
+  document.querySelector('.gameScore').innerText = `Wins : ${initalScore.Win}, Losses : ${initalScore.Lose}, Ties : ${initalScore.Tie}`;
+ }
+
+  </script>
+</body>
+</html>
