@@ -71,7 +71,17 @@
 <p class="gameMove"></p>
 <p class="gameScore"></p>
 <button onclick="initalScore.Win = 0 ; initalScore.Lose = 0; initalScore.Tie= 0; displayResult() ; localStorage.removeItem('score')">Reset score</button>
+<button onclick="autoplay()">Auto play</button>
   <script>
+
+function autoplay(){
+  setInterval(function(){
+    const pickedItem = playerMove();
+    computerMove(playerMove);
+  } , 2000);
+}
+
+
   let initalScore = JSON.parse(localStorage.getItem('Score')) || {
     Win  :  0,
     Lose :  0,
